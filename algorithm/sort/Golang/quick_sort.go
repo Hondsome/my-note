@@ -1,8 +1,34 @@
 package main
 
+import "fmt"
 // 快速排序
 // 快速排序思路
 // 快速排序通过分支法的思想，从一个数组中选取一个基准元素pivot，把这个数组中小于pivot的移动到左边，把大于pivot的移动到右边。然后再分别对左右两边数组进行快速排序。
+
+
+func quickSort(source []int, l, u int) {
+    if l < u {
+        m := partition(source, l, u)
+        quickSort(source, l, m-1)
+        quickSort(source, m, u)
+    }
+}
+
+func partition(source []int, l, u int) int { //划分
+    var (
+        pivot = source[l]
+        left = l
+        right = l+1
+    )
+    for ;right<u; right++ {
+        if source[right] <= pivot {
+            left++
+            source[left], source[right] = source[right], source[left]
+        }
+    }
+    source[l], source[left] = source[left], source[l]
+    return left+1
+}
 
 // 双边循环法
 // 思路
@@ -12,7 +38,7 @@ package main
 // 当left和right重叠的时候结束比较，将第一个元素和left，right指向的元素做交换，完成一轮排序
 
 // 代码
-func partition(arr []int, startIndex, endIndex int) int {
+func partitionv1(arr []int, startIndex, endIndex int) int {
     var (
         pivot = arr[startIndex]
         left  = startIndex
@@ -65,3 +91,9 @@ func partitionv2(arr []int, startIndex, endIndex int) int {
 // pivot选择
 // 有数组5，4，3，2，1要进行排序，如果选择第一个元素作为pivot的话，，每次选择的都是该数组中的最大值或最小值，每次进行排序只确定了一个元素的位置，导致时间复杂度退化成O(n^2)
 // 在选择pivot时，可以用随机选择的方式选择，即在当前数组中随机选择一个元素来作为pivot，减少选择到最大值或最小值的几率。
+
+func main(){
+	a := []int{2,9,6,1,8,23,5,3,21}
+	quickSort(a,0,len(a))	
+	fmt.Printf("sorted : %v \n",a)
+}
